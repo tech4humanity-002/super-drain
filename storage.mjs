@@ -1,0 +1,5 @@
+const DB_NAME="t4h-super-drain",STORE="runtime";let dbPromise;
+function db(){if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const r=indexedDB.open(DB_NAME,2);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains(STORE))r.result.createObjectStore(STORE)};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});return dbPromise}
+export async function readState(key,fallback){try{const d=await db();return await new Promise((resolve,reject)=>{const tx=d.transaction(STORE,"readonly"),r=tx.objectStore(STORE).get(key);r.onsuccess=()=>resolve(r.result??fallback);r.onerror=()=>reject(r.error)})}catch{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))}}
+export async function writeState(key,value){const d=await db();await new Promise((resolve,reject)=>{const tx=d.transaction(STORE,"readwrite");tx.objectStore(STORE).put(value,key);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)})}
+export async function clearState(){const d=await db();await new Promise((resolve,reject)=>{const tx=d.transaction(STORE,"readwrite");tx.objectStore(STORE).clear();tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});localStorage.clear()}
