@@ -1,0 +1,14 @@
+import assert from"node:assert/strict";
+import{readFile}from"node:fs/promises";
+import{FUNCTION_REGISTRY,createJob,replayJob,transitionJob}from"../jobs.mjs";
+assert.equal(FUNCTION_REGISTRY.length,3);
+const clock=()=>new Date("2026-08-10T00:00:00.000Z");
+const queued=createJob({functionId:"FN-SUPER-DRAIN-ANALYSER",priority:"urgent",files:[{name:"proof.txt",size:5,type:"text/plain"}]},clock);
+assert.equal(queued.status,"queued");
+const running=transitionJob(queued,"running",{},clock);assert.equal(running.attempts,1);
+const done=transitionJob(running,"succeeded",{receiptRef:"receipt:test"},clock);assert.equal(done.receipt_ref,"receipt:test");
+assert.equal(replayJob(done,clock).replay_of,done.job_id);assert.throws(()=>transitionJob(done,"running"));
+const html=await readFile(new URL("../index.html",import.meta.url),"utf8");
+for(const id of["function","priority","context","run"])assert.match(html,new RegExp(`id="${id}"`));
+for(const priority of["normal","urgent","fast-track","emergency"])assert.match(html,new RegExp(`value="${priority}"`));
+console.log("jobs-smoke: PASS");

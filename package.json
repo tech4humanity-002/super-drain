@@ -1,9 +1,1 @@
-{
-  "name": "super-drain",
-  "private": true,
-  "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "test": "node tests/engine-smoke.mjs"
-  }
-}
+{"name":"t4h-super-drain","private":true,"type":"module","version":"1.1.0","scripts":{"test":"node tests/jobs-smoke.mjs && node --check app-v2.mjs && node --check engine.mjs && node --check storage.mjs && node --check jobs.mjs"}}
