@@ -30,6 +30,42 @@ async function emitReceipt(receipt){
   return {status:"PARTIAL",event_id:event.event_id,reason:"Signal ingested; execution authority intentionally not inferred"};
 }
 
+function urlsFromDrop(event){
+  const dt=event.dataTransfer;
+  if(!dt)return [];
+  const values=[];
+  for(const type of ["text/uri-list","text/plain","text/html"]){
+    let value="";
+    try{value=dt.getData(type)||""}catch{}
+    if(type==="text/uri-list")values.push(...value.split(/\r?\n/).map(x=>x.trim()).filter(x=>/^https?:\/\//i.test(x)));
+    else if(type==="text/plain"&&/^https?:\/\/\S+$/i.test(value.trim()))values.push(value.trim());
+    else if(type==="text/html"){
+      const doc=new DOMParser().parseFromString(value,"text/html");
+      values.push(...[...doc.querySelectorAll("a[href]")].map(a=>a.href).filter(x=>/^https?:\/\//i.test(x)));
+    }
+  }
+  return [...new Set(values)];
+}
+
+function addDroppedUrls(event){
+  const urls=urlsFromDrop(event);
+  if(!urls.length)return;
+  const input=document.querySelector("#files");
+  if(!input)return;
+  const dt=new DataTransfer();
+  for(const url of urls)dt.items.add(new File([url],`url-${Date.now()}-${dt.items.length+1}.txt`,{type:"text/plain"}));
+  try{
+    input.files=dt.files;
+    input.dispatchEvent(new Event("change",{bubbles:true}));
+  }catch(error){
+    const context=document.querySelector("#context");
+    if(context)context.value=[context.value,...urls].filter(Boolean).join("\n");
+  }
+}
+
+const drop=document.querySelector("#drop");
+if(drop)drop.addEventListener("drop",addDroppedUrls,{capture:false});
+
 let last;
 async function poll(){
   try{
