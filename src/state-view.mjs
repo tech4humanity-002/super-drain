@@ -1,0 +1,1 @@
+export function buildStateView(state={}, {itemLimit=50}={}){const limit=Math.min(500,Math.max(0,Number(itemLimit)||0));const items=Array.isArray(state.items)?state.items:[];return {...state,items:limit?items.slice(-limit):[],item_window:{returned:limit?Math.min(items.length,limit):0,total:items.length,limit}}}
