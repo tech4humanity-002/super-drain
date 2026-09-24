@@ -1,1 +1,159 @@
-# Super Drain\n\n**Recover the work that got lost in the work.**\n\nSuper Drain is a local-first intelligence recovery tool. Give it messy source material such as documents, folders, URLs, CSV/JSON data, code, bookmarks or conversation exports. It preserves the source, analyses each occurrence, and produces a structured recovery report covering:\n\n- ideas and opportunities\n- unfinished work and gaps\n- next actions\n- intended outputs\n- opportunity costs\n- claims that still need verification\n- evidence-backed receipts and hashes\n\nThe useful idea is simple: **drain the backlog before it disappears into history.**\n\n## Why use it?\n\nMost work is not lost because nobody had the idea. It is lost because the idea, decision, unfinished task or useful signal is buried in a document, chat export, folder or web page.\n\nSuper Drain turns that material into a reviewable work register without requiring an AI API account or a T4H account.\n\n### What you get\n\nAfter processing a source set, Super Drain gives you:\n\n1. a preserved occurrence register\n2. extracted ideas, actions and unfinished work\n3. scored pages and signals for review\n4. a JSON receipt containing the batch evidence hash\n5. a CSV workbook for further analysis\n6. a local controller for resolving recovered work\n\nThe analysis is deliberately presented as **signals for review, not claims of fact**.\n\n## Try it\n\n### Browser\n\nOpen the application and drop in a URL, files or a folder.\n\nThe core browser workflow is local-first. Your source material is processed by the application rather than uploaded to a T4H service.\n\n### From source\n\n```bash\ngit clone https://github.com/tech4humanity-002/super-drain.git\ncd super-drain\nnpm install\nnpm test\n```\n\n`npm test` runs the deterministic smoke tests and syntax checks.\n\nFor the browser application, the repository is intentionally framework-free. A static web server is sufficient.\n\nFor example:\n\n```bash\nnpx serve .\n```\n\nThen open the local address shown by the server.\n\n> If your environment blocks `npx`, use any static HTTP server you already have. The application does not require a Node application server for its browser workflow.\n\n## No credentials required\n\n**The core Super Drain application does not require:**\n\n- an OpenAI or other model API key\n- an AWS account\n- AWS SSM\n- Supabase\n- OpenRouter\n- the T4H MCP\n- a T4H account\n- a private repository\n- a pre-existing T4H environment\n\nThe repository may contain optional integration adapters, but they are not required for the core local workflow.\n\n## What is local?\n\nThe browser application performs ingestion, extraction, analysis, SHA-256 hashing, receipt generation and CSV export locally.\n\nLocal persistence uses IndexedDB with a localStorage fallback for reads.\n\nZIP extraction uses JSZip from jsDelivr. If you want a fully offline environment, download/vendor that dependency as part of your own deployment.\n\n## What happens to a URL?\n\nWhen a URL is supplied through the application, the URL intake path retrieves the page and preserves the requested and final URL alongside the extracted occurrence.\n\nPrivate/local network targets are blocked by the URL intake safety checks.\n\n## Optional T4H integration\n\nThe public project is intended to work without T4H infrastructure.\n\nThe repository also contains an optional world-runtime integration adapter. It is **disabled unless explicitly configured at runtime** and must not be treated as a requirement for the core application.\n\nThis separation is intentional:\n\n**Core = usable by anyone.  \nAdapters = optional integrations.**\n\n## Files\n\n- `index.html` — application shell and public-facing entry point.\n- `app-v2.mjs` — UI, ingestion, reporting and DRAIN controller.\n- `engine.mjs` — extraction, analysis, hashing and report/CSV logic.\n- `storage.mjs` — local persistence.\n- `jobs.mjs` — job envelope and state transitions.\n- `src/` — local runtime, storage, intelligence, outtake and quality-review components.\n- `tests/` — deterministic smoke tests.\n- `scripts/` — runtime and quality acceptance checks.\n\n## Test commands\n\n```bash\nnpm test\n```\n\nRuntime acceptance against a running local runtime:\n\n```bash\nnpm run acceptance:runtime\n```\n\nQuality acceptance against a running local runtime:\n\n```bash\nnpm run acceptance:quality\n```\n\n## Fresh-machine principle\n\nA public repository is not considered usable merely because the source is visible.\n\nThe intended release test is:\n\n**clone → install → run → submit real input → inspect meaningful output**\n\nwith no T4H credentials or private infrastructure.\n\nThat is the standard we use for public release.\n\n## Security\n\nPlease do not commit API keys, passwords, tokens, private URLs or other credentials.\n\nIf you find a security issue, use the repository's security reporting mechanism rather than publishing credentials or exploit details in an issue.\n\n## Licence\n\nThis repository is currently published for inspection and use while its licensing position is being finalised. Check the repository before redistributing it as a third-party package.\n\n## Status\n\nSuper Drain is an active project. Expect the public version to evolve as people test it, report problems and contribute improvements.\n\n**If you find something that makes it better, please open an issue or pull request.**
+# Super Drain
+
+**Recover the work that got lost in the work.**
+
+Super Drain is an intelligence recovery tool for messy source material such as documents, folders, URLs, CSV/JSON data, code, bookmarks and conversation exports.
+
+It preserves the source, analyses each occurrence, and produces a structured recovery report covering:
+
+- ideas and opportunities
+- unfinished work and gaps
+- next actions
+- intended outputs
+- opportunity costs
+- claims that still need verification
+- evidence-backed receipts and hashes
+
+The useful idea is simple: **drain the backlog before it disappears into history.**
+
+## Why use it?
+
+Most work is not lost because nobody had the idea. It is lost because the idea, decision, unfinished task or useful signal is buried in a document, chat export, folder or web page.
+
+Super Drain turns that material into a reviewable work register.
+
+**No Tech 4 Humanity account. No AI API key. No special customer account.**
+
+It can run **in the cloud or locally**.
+
+## Try it
+
+### Cloud
+
+Open the public application and drop in a URL, files or a folder:
+
+https://super-drain.troy-latter.workers.dev
+
+The cloud version can optionally collect submitted material for product improvement and review. The collection setting is visible in the application and can be turned off before submitting.
+
+### Local
+
+Clone the repository, install dependencies, run the tests, then serve the directory with any static HTTP server.
+
+    git clone https://github.com/tech4humanity-002/super-drain.git
+    cd super-drain
+    npm install
+    npm test
+    npx serve .
+
+Then open the local address shown by the server.
+
+The core browser workflow does not require an AI service, T4H infrastructure or a private account.
+
+## No customer setup required
+
+You do not need:
+
+- a Tech 4 Humanity account
+- an AI API key
+- an AWS account
+- AWS SSM
+- OpenRouter
+- the T4H MCP
+- a private repository
+- a pre-existing T4H environment
+
+Optional integrations are separate from the core application.
+
+## Cloud collection
+
+Super Drain includes an optional product-improvement collection path.
+
+When collection is **ON**, submitted material and analysis results may be retained for product review and improvement. When collection is **OFF**, the core analysis remains local to the browser and the application does not send the submission to the collection service.
+
+Do not submit confidential or sensitive material unless you are comfortable with the collection setting and the published privacy terms.
+
+The collection service is deliberately separate from the core analysis so the application remains useful without it.
+
+## What is local?
+
+The browser application performs ingestion, extraction, analysis, SHA-256 hashing, receipt generation and CSV export locally.
+
+Local persistence uses IndexedDB.
+
+ZIP extraction uses JSZip from jsDelivr. If you need a fully offline environment, download or vendor that dependency as part of your own deployment.
+
+## What happens to a URL?
+
+When a URL is supplied through the application, the URL intake path retrieves the page and preserves the requested and final URL alongside the extracted occurrence.
+
+Private/local network targets are blocked by the URL intake safety checks.
+
+## Optional T4H integration
+
+The public project is intended to work without T4H infrastructure.
+
+The repository also contains an optional world-runtime integration adapter. It is **disabled unless explicitly configured at runtime** and must not be treated as a requirement for the core application.
+
+**Core = usable by anyone.  
+Adapters = optional integrations.**
+
+## Files
+
+- index.html — application shell and public-facing entry point.
+- app-v2.mjs — UI, ingestion, reporting and DRAIN controller.
+- engine.mjs — extraction, analysis, hashing and report/CSV logic.
+- storage.mjs — local persistence and release-data reset.
+- collection.mjs — optional product-improvement collection.
+- jobs.mjs — job envelope and state transitions.
+- src/ — local runtime, storage, intelligence, outtake and quality-review components.
+- tests/ — deterministic smoke tests.
+- scripts/ — runtime and quality acceptance checks.
+
+## Test commands
+
+    npm test
+
+Runtime acceptance against a running local runtime:
+
+    npm run acceptance:runtime
+
+Quality acceptance against a running local runtime:
+
+    npm run acceptance:quality
+
+## Fresh-machine principle
+
+A public repository is not considered usable merely because the source is visible.
+
+The intended release test is:
+
+**clone → install → run → submit real input → inspect meaningful output**
+
+with no T4H credentials or private infrastructure.
+
+That is the standard for public release.
+
+## Security
+
+Please do not commit API keys, passwords, tokens, private URLs or other credentials.
+
+If you find a security issue, use the repository's security reporting mechanism rather than publishing credentials or exploit details in an issue.
+
+## Licence
+
+This repository is currently published for inspection and use while its licensing position is being finalised. Check the repository before redistributing it as a third-party package.
+
+## Contact
+
+Questions, support or product feedback:
+
+- info@aisweetspots.com
+- support@aisweetspots.com
+- innovation@aisweetspots.com
+
+## Status
+
+Super Drain is an active project. Expect the public version to evolve as people test it, report problems and contribute improvements.
+
+**If you find something that makes it better, please open an issue or pull request.**
