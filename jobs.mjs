@@ -1,5 +1,5 @@
 export const FUNCTION_REGISTRY=Object.freeze([
- {id:"FN-SUPER-DRAIN-ANALYSER",name:"Super Drain analyser",trigger:"inline",status:"REAL"},
+ {id:"FN-SUPER-DRAIN-ANALYSER",name:"drAIn Lite analyser",trigger:"inline",status:"REAL"},
  {id:"FN-GITHUB-REUSE-ANALYSER",name:"GitHub reuse analyser",trigger:"governed-worker",status:"PARTIAL"},
  {id:"FN-WORKBOOK-ANALYSER",name:"Workbook analyser",trigger:"drive-worker",status:"PARTIAL"}
 ]);
