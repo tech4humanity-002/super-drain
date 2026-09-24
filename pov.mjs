@@ -34,7 +34,9 @@ export function scorePov(item,povId){
     }
   }
   const source=[item?.title,item?.content,item?.url].filter(Boolean).join(" ");
-  const contextMatches=(source.match(new RegExp(rule.source,"gi"))||[]).length;
+  const snippets=source.split(/(?<=[.!?])\\s+|\\n+/).map(x=>x.trim()).filter(x=>x.length>12&&rule.test(x)).slice(0,6);
+  snippets.forEach(value=>evidence.push({kind:"source_signal",value:value.slice(0,500)}));
+  const contextMatches=snippets.length;
   const score=Math.min(100,Math.round((analysis.scores?.total||0)*0.45 + evidence.reduce((n,x)=>n+(KIND_WEIGHT[povId]?.[x.kind]||1)*6,0) + Math.min(20,contextMatches*3)));
   return {score,evidence:evidence.slice(0,8)};
 }
