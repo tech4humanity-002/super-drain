@@ -1,8 +1,8 @@
-# Super Drain
+# drAIn Lite
 
 **Recover the work that got lost in the work.**
 
-Super Drain is an intelligence recovery tool for messy source material such as documents, folders, URLs, CSV/JSON data, code, bookmarks and conversation exports.
+drAIn Lite is an intelligence recovery tool for messy source material such as documents, folders, URLs, CSV/JSON data, code, bookmarks and conversation exports.
 
 It preserves the source, analyses each occurrence, and produces a structured recovery report covering:
 
@@ -20,7 +20,7 @@ The useful idea is simple: **drain the backlog before it disappears into history
 
 Most work is not lost because nobody had the idea. It is lost because the idea, decision, unfinished task or useful signal is buried in a document, chat export, folder or web page.
 
-Super Drain turns that material into a reviewable work register.
+drAIn Lite turns that material into a reviewable work register.
 
 **No Tech 4 Humanity account. No AI API key. No special customer account.**
 
@@ -50,6 +50,12 @@ Then open the local address shown by the server.
 
 The core browser workflow does not require an AI service, T4H infrastructure or a private account.
 
+## Point of view
+
+The free Lite release adds a lightweight point-of-view layer. Choose **Blended, CEO, CFO, CTO, CHRO or COO**. The documents are analysed once; the selected POV changes which existing signals are prioritised and shown. It does not create six separate copies of the corpus.
+
+The POV is therefore a presentation and prioritisation layer, not six independent AI analyses. The exported CSV includes the selected POV, POV score and supporting POV evidence.
+
 ## No customer setup required
 
 You do not need:
@@ -67,7 +73,7 @@ Optional integrations are separate from the core application.
 
 ## Cloud collection
 
-Super Drain includes an optional product-improvement collection path.
+drAIn Lite includes an optional product-improvement collection path.
 
 When collection is **ON**, submitted material and analysis results may be retained for product review and improvement. When collection is **OFF**, the core analysis remains local to the browser and the application does not send the submission to the collection service.
 
@@ -97,6 +103,10 @@ The repository also contains an optional world-runtime integration adapter. It i
 
 **Core = usable by anyone.  
 Adapters = optional integrations.**
+
+## Product family
+
+**drAIn Lite** is the simple public/free entry point. Deeper role perspectives and broader organisational capabilities can be added above the same Drain evidence model without changing the basic intake workflow.
 
 ## Files
 
@@ -154,6 +164,6 @@ Questions, support or product feedback:
 
 ## Status
 
-Super Drain is an active project. Expect the public version to evolve as people test it, report problems and contribute improvements.
+drAIn Lite is an active project. Expect the public version to evolve as people test it, report problems and contribute improvements.
 
 **If you find something that makes it better, please open an issue or pull request.**

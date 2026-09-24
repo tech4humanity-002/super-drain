@@ -115,7 +115,7 @@ export async function createOccurrence(raw, batch, index, corpusTerms) {
   };
 }
 
-export function buildReport(items) {
+export function buildReport(items,pov="BLENDED") {
   const ranked = [...items].sort((a,b) => b.analysis.scores.total - a.analysis.scores.total);
   const flatten = key => ranked.flatMap(x => x.analysis[key].map(value => ({ page_id:x.page_id, title:x.title, value, score:x.analysis.scores.total })));
   const top = list => take(list.map(x => x.value), 10);
@@ -142,6 +142,6 @@ export function buildReport(items) {
 export function csvEscape(value) { const s=typeof value==="object"?JSON.stringify(value):String(value??""); return /[",\n]/.test(s)?`"${s.replace(/"/g,'""')}"`:s; }
 export function toCsv(items) {
   const rows=[["Page ID","Source","Occurrence","Title","URL","Status","Ideas","Actions","Unfinished","Assets","Opportunities","Opportunity Costs","Intended Outputs","Completion Claims","Known","Novel","Mode","Importance","Evidence","Receipt","Target","Signal","Reuse","Monetisation","Gap","Total"]];
-  for(const x of items) rows.push([x.page_id,x.source_file,x.occurrence_number,x.title,x.url,x.status,x.analysis.ideas,x.analysis.actions,x.analysis.unfinished,x.analysis.assets,x.analysis.opportunities,x.analysis.opportunity_costs,x.analysis.intended_outputs,x.analysis.completion_claims,x.analysis.known,x.analysis.novel,x.control?.mode,x.control?.importance,x.control?.evidence,x.control?.receipt_ref,x.control?.target_ref,x.analysis.scores.signal,x.analysis.scores.reuse,x.analysis.scores.monetisation,x.analysis.scores.completion_gap,x.analysis.scores.total]);
+  for(const x of items) rows.push([pov,x.pov?.score??x.analysis.scores.total,(x.pov?.evidence||[]).map(e=>`${e.kind}: ${e.value}`).join(" | "),x.page_id,x.source_file,x.occurrence_number,x.title,x.url,x.status,x.analysis.ideas,x.analysis.actions,x.analysis.unfinished,x.analysis.assets,x.analysis.opportunities,x.analysis.opportunity_costs,x.analysis.intended_outputs,x.analysis.completion_claims,x.analysis.known,x.analysis.novel,x.control?.mode,x.control?.importance,x.control?.evidence,x.control?.receipt_ref,x.control?.target_ref,x.analysis.scores.signal,x.analysis.scores.reuse,x.analysis.scores.monetisation,x.analysis.scores.completion_gap,x.analysis.scores.total]);
   return rows.map(r=>r.map(csvEscape).join(",")).join("\n");
 }
