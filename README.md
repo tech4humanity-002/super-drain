@@ -34,7 +34,7 @@ Open the public application and drop in a URL, files or a folder:
 
 https://super-drain.troy-latter.workers.dev
 
-The cloud version can optionally collect submitted material for product improvement and review. The collection setting is visible in the application and can be turned off before submitting.
+The cloud version can optionally send derived signals to help improve the model. The collection setting is visible in the application and can be turned off before submitting. Raw source material is not collected by this setting.
 
 ### Local
 
@@ -75,7 +75,7 @@ Optional integrations are separate from the core application.
 
 drAIn Lite includes an optional product-improvement collection path.
 
-When collection is **ON**, submitted material and analysis results may be retained for product review and improvement. When collection is **OFF**, the core analysis remains local to the browser and the application does not send the submission to the collection service.
+When collection is **ON**, drAIn Lite sends compact derived signals such as source types, sizes, hashes, counts and scores for product improvement. Raw source material is not collected by this setting. When collection is **OFF**, the core analysis remains local to the browser and the application does not send the submission to the collection service. Email capture is separate and optional.
 
 Do not submit confidential or sensitive material unless you are comfortable with the collection setting and the published privacy terms.
 
