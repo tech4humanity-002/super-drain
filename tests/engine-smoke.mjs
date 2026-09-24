@@ -24,6 +24,8 @@ assert.match(occurrence.page_id, /^PAGE-/);
 assert.match(occurrence.occurrence_id, /^occ_/);
 assert.equal(occurrence.content_hash.length, 64);
 assert.equal(occurrence.status, "analysed");
+const sameMaterial = await createOccurrence({...raw, occurrence_ref:"smoke.md:line-999"}, batch, 1, new Set());
+assert.equal(sameMaterial.content_hash, occurrence.content_hash, "same material must deduplicate regardless of occurrence reference");
 
 const report = buildReport([occurrence]);
 assert.equal(report.pages, 1);
