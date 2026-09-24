@@ -24,15 +24,19 @@ assert.match(occurrence.page_id, /^PAGE-/);
 assert.match(occurrence.occurrence_id, /^occ_/);
 assert.equal(occurrence.content_hash.length, 64);
 assert.equal(occurrence.status, "analysed");
+const sameMaterial = await createOccurrence({...raw, occurrence_ref:"smoke.md:line-999"}, batch, 1, new Set());
+assert.equal(sameMaterial.content_hash, occurrence.content_hash, "same material must deduplicate regardless of occurrence reference");
 
 const report = buildReport([occurrence]);
 assert.equal(report.pages, 1);
+assert.equal(report.sources, 1);
+assert.equal(report.evidence_units, 1);
 assert.equal(report.top_pages.length, 1);
 assert.ok(Array.isArray(report.top_actions));
 
 const csv = toCsv([occurrence]);
-assert.match(csv, /^Page ID,Source,Occurrence/);
+assert.match(csv, /^POV,POV Score,POV Evidence,Page ID,Source,Occurrence/);
 assert.match(csv, /PAGE-/);
 
 console.log("SUPER_DRAIN_SMOKE_TEST=PASS");
-console.log(JSON.stringify({pages: report.pages, score: occurrence.analysis.scores.total, sha256: occurrence.content_hash}, null, 2));
+console.log(JSON.stringify({pages: report.pages, sources: report.sources, evidence_units: report.evidence_units, score: occurrence.analysis.scores.total, sha256: occurrence.content_hash}, null, 2));

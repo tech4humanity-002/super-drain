@@ -4,7 +4,7 @@
 
 drAIn Lite is an intelligence recovery tool for messy source material such as documents, folders, URLs, CSV/JSON data, code, bookmarks and conversation exports.
 
-It preserves the source, analyses each occurrence, and produces a structured recovery report covering:
+It preserves the source, analyses evidence units within it, deduplicates repeated material by content hash, and produces a structured recovery report covering:
 
 - ideas and opportunities
 - unfinished work and gaps
@@ -83,7 +83,7 @@ The collection service is deliberately separate from the core analysis so the ap
 
 ## What is local?
 
-The browser application performs ingestion, extraction, analysis, SHA-256 hashing, receipt generation and CSV export locally.
+The browser application performs ingestion, extraction, analysis, SHA-256 hashing, receipt generation and CSV export locally. Dashboard counts distinguish **sources** from **evidence units**, so one large file is not presented as thousands of pages. Re-submitting the same material is deduplicated by content hash.
 
 Local persistence uses IndexedDB.
 
