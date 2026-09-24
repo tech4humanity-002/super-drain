@@ -95,7 +95,7 @@ export function analyseOccurrence(input, corpusTerms = new Set()) {
 
 export async function createOccurrence(raw, batch, index, corpusTerms) {
   const content = clean(raw.content || "");
-  const content_hash = await sha256(JSON.stringify({ title: raw.title || "", url: raw.url || "", content, occurrence_ref: raw.occurrence_ref }));
+  const content_hash = await sha256(JSON.stringify({ title: clean(raw.title) || "", url: raw.url || "", content }));
   const analysis = analyseOccurrence(raw, corpusTerms);
   return {
     page_id: `PAGE-${batch.batch_id.slice(-8)}-${String(index + 1).padStart(5, "0")}`,
@@ -126,6 +126,8 @@ export function buildReport(items,pov="BLENDED") {
   return {
     generated_at: new Date().toISOString(),
     pages: ranked.length,
+    evidence_units: ranked.length,
+    sources: new Set(ranked.map(x => x.source_file || x.source_name || "unknown")).size,
     top_pages: ranked.slice(0,10).map(x => ({page_id:x.page_id,title:x.title,score:x.analysis.scores.total})),
     top_opportunities: top(flatten("opportunities")),
     top_unfinished: top(flatten("unfinished")),
